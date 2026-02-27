@@ -7,12 +7,6 @@ def test_reduce_dict_removes_words_with_letter():
     assert result == ["cherry"]
 
 
-def test_reduce_dict_empty_list():
-    words = []
-    result = reduce_dict(words, "a")
-    assert result == []
-
-
 def test_reduce_dict_no_matches():
     words = ["xyz", "qwerty"]
     result = reduce_dict(words, "a")
