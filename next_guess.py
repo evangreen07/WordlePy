@@ -1,10 +1,3 @@
-import word_collection
-import frequency
-
-def initial_guess():
-    selection = word_collection.word_collect()
-    return frequency.word_score_method_weighted_linear(selection)
-
 def format_words_excluded(guess, code):
     letter_values = [[letter, status] for letter, status in zip(guess, code)]
     return [letter[0] for letter in letter_values if letter[1] == 'B']
@@ -52,11 +45,10 @@ def wordle_result(previous_guess, code, words):
             removed_words.append(word)
 
 
+    
     words_after_3 = [word for word in words_after_2 if word not in removed_words]
     return words_after_3
 
-def reduce_dict(words, letter):
-    return [word for word in words if letter not in word]
 
 print(wordle_result('crane', 'BBYGG'))
     
