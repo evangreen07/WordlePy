@@ -341,14 +341,14 @@ def prob_of_pairs(words):
 
 
 def prob_of_pairs_score(words):
-
+    
 
     
     return
 
 #print(prob_of_pairs(all_words))
 
-def word_score_method_weighted_proportial(words):
+def word_score_method_weighted_proportional(words):
 
     return
     

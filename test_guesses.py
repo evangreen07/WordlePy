@@ -1,20 +1,32 @@
 import pytest
-from next_guess import wordle_result
 
-def test_reduce_dict_removes_words_with_letter():
-    words = ["apple", "banana", "cherry", "date"]
-    result = wordle_result(words, "a")
-    assert result == ["cherry"]
+from wordle_solver import WordleSolver
+
+class TestWordleSolver:
+    def test_initialisation(self):
+        word_list = ['apple', 'grape', 'melon']
+        solver = WordleSolver(word_list)
+        assert solver.possile_words == word_list
+
+    def test_suggest_word(self):
+        word_list = ['apple', 'grape', 'melon']
+        solver = WordleSolver(word_list)
+        assert solver.suggest_word() == 'apple'
+
+    def test_process_feedback(self):
+        word_list = ['apple', 'grape', 'melon']
+        solver = WordleSolver(word_list)
+        solver.process_feedback('apple', 'GGGGG')
+        assert solver.possile_words == ['apple']
+
+    def test_process_feedback_no_match(self):
+        word_list = ['apple', 'grape', 'miron']
+        solver = WordleSolver(word_list)
+        solver.process_feedback('apple', 'BBBBB')
+        assert solver.possile_words == ['miron']
+
+    
 
 
 
-def test_reduce_dict_no_matches():
-    words = ["xyz", "qwerty"]
-    result = wordle_result(words, "a")
-    assert result == ["xyz", "qwerty"]
 
-
-def test_reduce_dict_all_contain_letter():
-    words = ["apple", "cherry", "pilot"]
-    result = wordle_result('crane', 'BBYGG', words)
-    assert result == ['cherry', 'pilot']
