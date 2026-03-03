@@ -16,6 +16,7 @@ def main():
         print(f'Suggested guess: {suggested_word}')
 
         feedback = input("Enter the feedback from Wordle (or 'Q' to quit): ").strip().upper()
+
         
         if feedback == 'Q':
             print("Exiting...")

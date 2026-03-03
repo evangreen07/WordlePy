@@ -293,8 +293,8 @@ def word_score_method_weighted_linear(words):
     structure_freq = frequency_of_word_structure_score(words)
     variety_freq = frequency_of_letter_variety_score(words)
     collective_word_score = {word: letter_freq[word] + position_freq[word] + pair_freq[word] + structure_freq[word] + variety_freq[word] for word in words}
-
-    return max(collective_word_score.items(), key=lambda item : item[1])
+    suggested_word = max(collective_word_score.items(), key=lambda item : item[1])
+    return suggested_word[0]
 
 
 
@@ -341,7 +341,7 @@ def prob_of_pairs(words):
 
 
 def prob_of_pairs_score(words):
-    
+
 
     
     return

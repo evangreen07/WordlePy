@@ -1,5 +1,5 @@
 import pytest
-
+import word_collection
 from wordle_solver import WordleSolver
 
 class TestWordleSolver:
@@ -25,7 +25,12 @@ class TestWordleSolver:
         solver.process_feedback('apple', 'BBBBB')
         assert solver.possile_words == ['miron']
 
-    
+    def test_process_feedback_multiple_letter_states(self):
+        word_list = ['apple', 'trust', 'piper', 'ghost', 'groom', 'slate', 'furry']
+        answer = 'furry'
+        solver = WordleSolver(word_list)
+        solver.process_feedback('rarer', 'YBGBB')
+        assert solver.possible_words == [answer]
 
 
 
