@@ -1,5 +1,3 @@
-import pytest
-import word_collection
 from wordle_solver import WordleSolver
 
 class TestWordleSolver:
@@ -20,10 +18,10 @@ class TestWordleSolver:
         assert solver.possible_words == ['apple']
 
     def test_process_feedback_no_match(self):
-        word_list = ['apple', 'grape', 'miron']
+        word_list = ['apple', 'grape', 'melon']
         solver = WordleSolver(word_list)
         solver.process_feedback('apple', 'BBBBB')
-        assert solver.possible_words == ['miron']
+        assert solver.possible_words == []
 
     def test_process_feedback_multiple_letter_states(self):
         word_list = ['apple', 'trust', 'piper', 'ghost', 'groom', 'slate', 'furry']
@@ -31,6 +29,23 @@ class TestWordleSolver:
         solver = WordleSolver(word_list)
         solver.process_feedback('rarer', 'YBGBB')
         assert solver.possible_words == [answer]
+
+    def test_wordle_solver_for_all_green(self):
+        word_list = ['apple', 'lemon', 'grape', 'kudzu', 'rarer']
+        answer = 'grape'
+        solver = WordleSolver(word_list)
+        solver.process_feedback('grape', 'GGGGG')
+        assert solver.possible_words == [answer]
+    
+    def test_wordle_solver_for_all_yellow(self):
+        word_list = ['apple', 'lemon', 'grape', 'kudzu', 'rarer', 'pager']
+        answer = 'pager'
+        solver = WordleSolver(word_list)
+        solver.process_feedback('grape', 'YYYYY')
+        assert solver.possible_words == [answer]
+    
+    
+        
 
 
 

@@ -355,7 +355,7 @@ def prob_of_pairs_score(words):
 #print(prob_of_pairs_score(all_words))
 
 def word_score_method_weighted_proportional(words):
-
+    
     return
     
 
