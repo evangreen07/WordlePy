@@ -13,21 +13,21 @@ def main():
         
         suggested_word = solver.suggest_word()
 
-        print(f'Suggested guess: {suggested_word}')
+        print(f'Next best guess: {suggested_word}')
 
-        feedback = input("Enter the feedback from Wordle (or 'Q' to quit): ").strip().upper()
+        feedback = input('Enter the feedback from Wordle (or Q to quit): ').strip().upper()
 
         
         if feedback == 'Q':
-            print("Exiting...")
+
             break
             
         if len(feedback) != 5 or not all(c in 'BYG' for c in feedback):
-            print("Invalid input! Please enter exactly 5 characters using B, Y, and G.")
+            print('Invalid input')
             continue
             
         if feedback == 'GGGGG':
-            print(f"\nSuccess! The word was {suggested_word}. Found in {attempts} attempt(s).")
+            print(f'\nSuccess! The word was {suggested_word}. Found in {attempts} attempt(s).')
             break
             
         possible_words = solver.process_feedback(suggested_word, feedback)
@@ -35,7 +35,7 @@ def main():
         attempts += 1
         
     if attempts > max_attempts and feedback != 'GGGGG':
-        print("\nBetter luck next time! Reached the maximum number of attempts.")
+        print('\n Fail')
 
 if __name__ == "__main__":
     main()

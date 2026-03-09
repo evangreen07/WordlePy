@@ -339,14 +339,20 @@ def prob_of_pairs(words):
     total_pairs = len(words) * 4
     return {pair: pair_dict[pair] / total_pairs for pair in pair_dict}
 
+#print(prob_of_pairs(all_words))
 
 def prob_of_pairs_score(words):
+    pair_prob_dict = prob_of_pairs(words)
+    prob_dict = {}
+    for word in words:
+        word_prob = 1
+        for index in range(0, 4):
+            word_prob *= pair_prob_dict[word[index: index + 2]]
+        prob_dict.update({word: word_prob})
 
+    return prob_dict
 
-    
-    return
-
-#print(prob_of_pairs(all_words))
+#print(prob_of_pairs_score(all_words))
 
 def word_score_method_weighted_proportional(words):
 
