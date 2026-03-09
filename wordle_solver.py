@@ -87,52 +87,41 @@ class WordleSolver:
         min_counts = {}
         max_counts = {}
 
-        # Step 1: compute minimum counts
-        for i in range(len(guess)):
-            if feedback[i] in ("G", "Y"):
-                letter = guess[i]
+        for index in range(0, 5):
+            if feedback[index] in ("G", "Y"):
+                letter = guess[index]
                 min_counts[letter] = min_counts.get(letter, 0) + 1
 
-        # Step 2: determine maximum counts
-        for i in range(len(guess)):
-            letter = guess[i]
-
-            if feedback[i] == "B":
+        for index in range(0, 5):
+            letter = guess[index]
+            if feedback[index] == "B":
                 if letter in min_counts:
                     max_counts[letter] = min_counts[letter]
                 else:
                     max_counts[letter] = 0
-
         valid_words = []
 
         for word in self.possible_words:
-
             valid = True
+            for index in range(0, 5):
+                if feedback[index] == "G" and word[index] != guess[index]:
+                    valid = False
+                    break
+            if not valid:
+                continue
 
-            # Green position check
-            for i in range(len(guess)):
-                if feedback[i] == "G" and word[i] != guess[i]:
+            for index in range(0, 5):
+                if feedback[index] == "Y" and word[index] == guess[index]:
                     valid = False
                     break
 
             if not valid:
                 continue
 
-            # Yellow position check (position only)
-            for i in range(len(guess)):
-                if feedback[i] == "Y" and word[i] == guess[i]:
-                    valid = False
-                    break
-
-            if not valid:
-                continue
-
-            # Count letters in candidate
             word_counts = {}
             for c in word:
                 word_counts[c] = word_counts.get(c, 0) + 1
 
-            # Minimum count check
             for letter, count in min_counts.items():
                 if word_counts.get(letter, 0) < count:
                     valid = False
@@ -141,7 +130,6 @@ class WordleSolver:
             if not valid:
                 continue
 
-            # Maximum count check
             for letter, count in max_counts.items():
                 if word_counts.get(letter, 0) > count:
                     valid = False

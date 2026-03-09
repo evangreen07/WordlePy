@@ -8,34 +8,29 @@ def main():
     max_attempts = 6
     
     while attempts <= max_attempts:
-        print(f'\n--- Attempt {attempts} / {max_attempts} ---')
-        print(f'Possible words remaining: {len(solver.possible_words)}')
-        
+        print(f'Attempt {attempts} / {max_attempts}')
+        print(f'Words remaining: {len(solver.possible_words)}')
         suggested_word = solver.suggest_word()
+        print(f'Most likely guess: {suggested_word}')
 
-        print(f'Next best guess: {suggested_word}')
-
-        feedback = input('Enter the feedback from Wordle (or Q to quit): ').strip().upper()
-
-        
+        feedback = input('Enter feedback or Q to quit: ').strip().upper()
         if feedback == 'Q':
-
             break
             
-        if len(feedback) != 5 or not all(c in 'BYG' for c in feedback):
-            print('Invalid input')
+        if len(feedback) != 5 or not all(feedback_char in 'GYB' for feedback_char in feedback):
+            print('Invalid')
             continue
             
         if feedback == 'GGGGG':
-            print(f'\nSuccess! The word was {suggested_word}. Found in {attempts} attempt(s).')
+            print(f'{suggested_word} is correct: {attempts} attempt(s)')
             break
             
         possible_words = solver.process_feedback(suggested_word, feedback)
-        
+
         attempts += 1
         
     if attempts > max_attempts and feedback != 'GGGGG':
-        print('\n Fail')
+        print('Fail')
 
 if __name__ == "__main__":
     main()
