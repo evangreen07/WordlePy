@@ -2,6 +2,19 @@ import word_collection
 from wordle_solver import WordleSolver
 
 def main():  
+    """
+    This function runs the interactive Wordle loop between the code and the user.
+    
+    It enters a while loop which begins by displaying:
+    - The attempt number (starts at 1)
+    - The number of possible words left after any given feedback
+    - The next best word to prompt Wordle with, based on data collected in wordle_word_data.py
+    Parameters: 
+    - None
+
+    Returns:
+    - No specific return value as the game is contained in a while loop.
+    """
     possible_words = word_collection.word_collect()
     solver = WordleSolver(possible_words)
     attempts = 1

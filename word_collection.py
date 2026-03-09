@@ -4,11 +4,9 @@ def word_collect():
     Its purpose it to read the text file and create a list with each element being a new word.
     
     Paramters:
-    ---------
     None
 
     Returns:
-    -------
     List of all the possible wordle answers.
     
     """

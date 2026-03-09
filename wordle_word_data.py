@@ -304,6 +304,8 @@ def prob_of_letter(words):
     letter_freq = {letter : most_common_letter(words)[letter] / total_letters for letter in letter_dict}
     return  letter_freq
 
+#print(prob_of_letter(all_words))
+
 def prob_of_letter_score(words):
     prob_letter_dict = prob_of_letter(words)
     probs = {}

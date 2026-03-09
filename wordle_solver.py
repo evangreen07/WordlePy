@@ -1,17 +1,49 @@
-import frequency
+import wordle_word_data
 
 def initial_guess_linear(selection):
-    return frequency.word_score_method_weighted_linear(selection)
+    """
+    This function is the first output to the user when calling the WordlePy library, specifically, the WordleSolver class.
+
+    The 'linear' part of this function is the type of test it uses to suggest the next best word. 
+    
+    Linear test is calculated by taking the frequency of several word statistics and simply adding them together.
+    
+    A word's score is the sum of all these tests. For example:
+
+    The word 'eerie':
+    - Has 3 'e's, 1 'r' and 1 'i'
+    - Has pairs of letters, 'ee', 'er', 'ri', 'ie'
+    - Follows a vowel-vowel-consonant-vowel-vowel word structure
+
+    The data gathered in wordle_word_data shows that in all words, 'e' occurs 1233 times, 'r' has 899 and 'i' has 671.
+    
+    Therefore its cumulative score from just this test is the sum of all these frequencies of 5269. (3 * 1233) + 899 + 671.
+
+    Parameters:
+    - selection, this is the current word list which is filtered after each incorrect guess. (where the feedback is not 'GGGGG')
+
+    Returns:
+    - The next best guess using the linear testing format in wordle_word_data.py
+    """
+    return wordle_word_data.word_score_method_weighted_linear(selection)
 
 def initial_guess_weighted_porportional(selection):
-    return frequency.word_score_method_weighted_proportional(selection)
+    """
+    This function acts the same as the 'inital_guess_linear' function except it uses a weighted proportional testing style.
+
+    Rather than taking frequencies of the letters, pairs, structures etc, it takes the probabilities of them occuring.
+
+    Take 'eerie' as an example:
+    - Letter 'e'
+    """
+    return wordle_word_data.word_score_method_weighted_proportional(selection)
 
 class WordleSolver:
     def __init__(self, possible_words):
         self.possible_words = possible_words
     
     def suggest_word(self):
-        return frequency.word_score_method_weighted_linear(self.possible_words)
+        return wordle_word_data.word_score_method_weighted_linear(self.possible_words)
     
     def process_feedback(self, guess, feedback):
         self._update_possible_words(guess, feedback)
