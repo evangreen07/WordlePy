@@ -1,6 +1,8 @@
 import random
 from wordle_solver import WordleSolver
 import word_collection 
+import play_wordle
+
 
 class TestWordleSolver:
     def test_initialisation(self):
@@ -83,7 +85,30 @@ class TestWordleSolver:
         feedback = solver._generate_feedback('freer', 'rarer')
         assert feedback == 'BYBGG'
 
+    def test_feedback_duplicate_letters(self):
+        word_list = ['apple', 'lemon', 'grape', 'kudzu', 'rarer', 'drape', 'crane', 'freer', 'drier']
+        solver = WordleSolver(word_list)
+        feedback = solver._generate_feedback('freer', 'drier')
+        assert feedback == 'BGBGG'
+
+    def test_feedback_all_blacks(self):
+        word_list = ['apple', 'lemon', 'grape', 'kudzu', 'rarer', 'drape', 'crane', 'freer', 'drier']
+        solver = WordleSolver(word_list)
+        feedback = solver._generate_feedback('freer', 'kudzu')
+        assert feedback == 'BBBBB'
+
+    def test_wordle_solves_every_word(self):
+        word_list = word_collection.word_collect()
+        answer = word_list[random.randint(0, len(word_list) - 1)]
+        solver = play_wordle.auto_wordle(answer)
+        assert solver <= 6
         
+
+
+
+
+        
+
     
     
         

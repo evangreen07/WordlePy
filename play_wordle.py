@@ -19,7 +19,7 @@ def main():
     solver = WordleSolver(possible_words)
     attempts = 1
     max_attempts = 6
-    
+
     while attempts <= max_attempts:
         print(f'Attempt {attempts} / {max_attempts}')
         print(f'Words remaining: {len(solver.possible_words)}')
@@ -49,3 +49,22 @@ if __name__ == "__main__":
     main()
 
 
+def auto_wordle(answer):
+    possible_words = word_collection.word_collect()
+    solver = WordleSolver(possible_words)
+    attempts = 1
+    max_attempts = 6
+
+    while attempts <= max_attempts:
+        suggested_word = solver.suggest_word()
+        feedback = solver._generate_feedback(suggested_word, answer)
+          
+        if feedback == 'GGGGG':
+            return attempts
+            
+        possible_words = solver.process_feedback(suggested_word, feedback)
+
+        attempts += 1
+        
+    if attempts > max_attempts and feedback != 'GGGGG':
+        return
