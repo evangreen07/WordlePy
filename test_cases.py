@@ -1,4 +1,6 @@
+import random
 from wordle_solver import WordleSolver
+import word_collection 
 
 class TestWordleSolver:
     def test_initialisation(self):
@@ -43,6 +45,45 @@ class TestWordleSolver:
         solver = WordleSolver(word_list)
         solver.process_feedback('grape', 'YYYYY')
         assert solver.possible_words == [answer]
+
+    def test_wordle_solver_all_green_except_one(self):
+        word_list = ['apple', 'lemon', 'grape', 'kudzu', 'rarer', 'drape']
+        answer = 'drape'
+        solver = WordleSolver(word_list)
+        solver.process_feedback('grape', 'BGGGG')
+        assert solver.possible_words == [answer]
+
+    def test_feedback_generator_one_black(self):
+        word_list = ['apple', 'lemon', 'grape', 'kudzu', 'rarer', 'drape']
+        solver = WordleSolver(word_list)
+        feedback = solver._generate_feedback('grape', 'drape')
+        assert feedback == 'BGGGG'
+
+    def test_feedback_generator_yellow(self):
+        word_list = ['apple', 'lemon', 'grape', 'kudzu', 'rarer', 'drape']
+        solver = WordleSolver(word_list)
+        feedback = solver._generate_feedback('grape', 'rarer')
+        assert feedback == 'BYYBY'
+
+    def test_feedback_generator_all_correct(self):
+        word_list = ['apple', 'lemon', 'grape', 'kudzu', 'rarer', 'drape']
+        solver = WordleSolver(word_list)
+        feedback = solver._generate_feedback('rarer', 'rarer')
+        assert feedback == 'GGGGG'
+            
+    def test_feedback_all_three_states(self):
+        word_list = ['apple', 'lemon', 'grape', 'kudzu', 'rarer', 'drape', 'crane', 'drain']
+        solver = WordleSolver(word_list)
+        feedback = solver._generate_feedback('crane', 'drain')
+        assert feedback == 'BGGYB'
+
+    def test_feedback_duplicate_yellows(self):
+        word_list = ['apple', 'lemon', 'grape', 'kudzu', 'rarer', 'drape', 'crane', 'freer']
+        solver = WordleSolver(word_list)
+        feedback = solver._generate_feedback('freer', 'rarer')
+        assert feedback == 'BYBGG'
+
+        
     
     
         

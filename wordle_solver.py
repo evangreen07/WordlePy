@@ -134,40 +134,40 @@ class WordleSolver:
         valid_words = []
 
         for word in self.possible_words:
-            valid = True
+            valid_word = True
             for index in range(0, 5):
                 if feedback[index] == "G" and word[index] != guess[index]:
-                    valid = False
+                    valid_word = False
                     break
-            if not valid:
+            if not valid_word:
                 continue
 
             for index in range(0, 5):
                 if feedback[index] == "Y" and word[index] == guess[index]:
-                    valid = False
+                    valid_word = False
                     break
 
-            if not valid:
+            if not valid_word:
                 continue
 
             word_counts = {}
-            for c in word:
-                word_counts[c] = word_counts.get(c, 0) + 1
+            for count in word:
+                word_counts[count] = word_counts.get(count, 0) + 1
 
             for letter, count in min_counts.items():
                 if word_counts.get(letter, 0) < count:
-                    valid = False
+                    valid_word = False
                     break
 
-            if not valid:
+            if not valid_word:
                 continue
 
             for letter, count in max_counts.items():
                 if word_counts.get(letter, 0) > count:
-                    valid = False
+                    valid_word = False
                     break
 
-            if valid:
+            if valid_word:
                 valid_words.append(word)
 
             self.possible_words = valid_words
@@ -211,5 +211,57 @@ class WordleSolver:
     #     letter_values = [[letter, status] for letter, status in zip(guess, feedback)]
     #     green_letters = [(letter[0], pos + 1) for pos, letter in enumerate(letter_values) if letter[1] == 'G']
     #     return green_letters
-    
+    def _generate_feedback(self, guess, answer):
+        # if guess == answer:
+        #     return 'GGGGG'
+        
+        # max_counts = {}
+        # for letter in answer:
+        #     max_counts[letter] = max_counts.get(letter, 0) + 1
+        
+        # guess_counts = {letter: 0 for letter in max_counts}
+        # feedback = ''
+        # for index in range(0, 5):
+        #     if guess[index] == answer[index]:
+        #         feedback += 'G'
+        #         guess_counts[guess[index]] += 1
+            
+        #     else:
+        #         if guess[index] in answer and guess_counts[guess[index]] < max_counts[guess[index]]:
+        #             feedback += 'Y'
+                
+        #         if guess[index] not in answer:
+        #             feedback += 'B'
+
+        # return feedback
+        if guess == answer:
+            return 'GGGGG'
+        
+        feedback = ['B', 'B', 'B', 'B', 'B']
+        letter_counts = {}
+        for letter in answer:
+            letter_counts[letter] = letter_counts.get(letter, 0) + 1
+
+        for index in range(0, 5):
+            if guess[index] == answer[index]:
+                feedback[index] = 'G'
+                letter_counts[answer[index]] -= 1
+
+        for index in range(0, 5):
+            if feedback[index] == 'B':  
+                letter = guess[index]
+                if letter in letter_counts and letter_counts[letter] > 0:
+                    feedback[index] = 'Y'
+                    letter_counts[letter] -= 1
+        
+        feedback_str = ''
+        for f in feedback:
+            feedback_str += f
+        
+        return feedback_str
+
+
+
+
+
     
