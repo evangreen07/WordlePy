@@ -43,7 +43,7 @@ class WordleSolver:
         self.possible_words = possible_words
     
     def suggest_word(self):
-        return wordle_word_data.word_score_method_weighted_linear(self.possible_words)
+        return wordle_word_data.word_score_method_weighted_proportional(self.possible_words)
     
     def process_feedback(self, guess, feedback):
         self._update_possible_words(guess, feedback)

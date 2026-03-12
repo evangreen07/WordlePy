@@ -261,6 +261,10 @@ def frequency_of_word_structure_score(words):
     structure_dict = frequency_of_word_structure(words)
     return {word: structure_dict[get_word_structure(word)] for word in words}
 
+def prob_of_structure_score(words):
+    frequency_of_word_structures = frequency_of_word_structure_score(words)
+    return {word: frequency_of_word_structures[word] / len(words) for word in words}
+
 def get_letter_occurences(word):
     return {letter : word.count(letter) for letter in word}
 
@@ -268,7 +272,7 @@ def frequency_of_letter_variety(words):
     letter_variety_dict = {word: len(get_letter_occurences(word)) for word in words}
     return letter_variety_dict
 
-def probability_of_letter_variety(words):
+def prob_of_letter_variety(words):
     instances = [1, 2, 3, 4, 5]
     letter_varieties = frequency_of_letter_variety(words)
     probability_of_variety = {}
@@ -277,6 +281,13 @@ def probability_of_letter_variety(words):
         probability_of_variety.update({instance: len(condensed_words) / len(words)})
     
     return probability_of_variety
+
+def prob_of_letter_variety_score(words):
+    letter_varieties = frequency_of_letter_variety(words)
+    prob_of_variety = prob_of_letter_variety(words)
+    return {word:  prob_of_variety[letter_varieties[word]] for word in words}
+
+# print(prob_of_letter_variety_score(all_words))
 
 def frequency_of_letter_variety_score(words):
     word_variety = frequency_of_letter_variety(words)
@@ -357,10 +368,14 @@ def prob_of_pairs_score(words):
 #print(prob_of_pairs_score(all_words))
 
 def word_score_method_weighted_proportional(words):
-    
-    return
-    
+    letter_prob = prob_of_letter_score(words)
+    position_prob = prob_of_position_score(words)
+    pair_prob = prob_of_pairs_score(words)
+    structure_prob = prob_of_structure_score(words)
+    variety_prob = prob_of_letter_variety_score(words)
+    collective_word_scores = {word: 1 * letter_prob[word] * position_prob[word] * pair_prob[word] * structure_prob[word] * variety_prob[word] for word in words}
+    suggested_word = max(collective_word_scores.items(), key=lambda item : item[1])
+    return suggested_word[0]
 
-
-#print(word_score_method_1(all_words))
+# print(word_score_method_weighted_proportional(all_words))
 

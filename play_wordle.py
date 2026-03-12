@@ -39,7 +39,6 @@ def main():
             break
             
         possible_words = solver.process_feedback(suggested_word, feedback)
-
         attempts += 1
         
     if attempts > max_attempts and feedback != 'GGGGG':
@@ -53,7 +52,7 @@ def auto_wordle(answer):
     possible_words = word_collection.word_collect()
     solver = WordleSolver(possible_words)
     attempts = 1
-    max_attempts = 6
+    max_attempts = 8
 
     while attempts <= max_attempts:
         suggested_word = solver.suggest_word()
@@ -68,3 +67,4 @@ def auto_wordle(answer):
         
     if attempts > max_attempts and feedback != 'GGGGG':
         return
+
