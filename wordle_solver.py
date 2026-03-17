@@ -1,5 +1,4 @@
 import wordle_word_data
-
 def initial_guess_linear(selection):
     """
     This function is the first output to the user when calling the WordlePy library, specifically, the WordleSolver class.
@@ -43,7 +42,8 @@ class WordleSolver:
         self.possible_words = possible_words
     
     def suggest_word(self):
-        return wordle_word_data.word_score_method_weighted_proportional(self.possible_words)
+        best_guess = wordle_word_data.word_score_method_weighted_proportional(self.possible_words)
+        return best_guess
     
     def process_feedback(self, guess, feedback):
         self._update_possible_words(guess, feedback)
@@ -259,3 +259,15 @@ class WordleSolver:
             feedback_str += f
         
         return feedback_str
+    
+    def _generate_all_possible_feedbacks(self, answer): 
+        possible_words = self.possible_words
+        possible_feedbacks = {}
+        for word in possible_words:
+            feedback = self._generate_feedback(word, answer)
+            possible_feedbacks[feedback] = possible_feedbacks.get(feedback, 0) + 1
+
+        probability_of_feedbacks = {feedback: possible_feedbacks[feedback] / len(possible_words) for feedback in possible_feedbacks}
+        return sorted(probability_of_feedbacks.items(), key=lambda item : -item[1])[0][0]
+
+

@@ -52,7 +52,7 @@ def auto_wordle(answer):
     possible_words = word_collection.word_collect()
     solver = WordleSolver(possible_words)
     attempts = 1
-    max_attempts = 8
+    max_attempts = 6
 
     while attempts <= max_attempts:
         suggested_word = solver.suggest_word()

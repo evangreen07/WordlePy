@@ -1,4 +1,3 @@
-import random
 from wordle_solver import WordleSolver
 import word_collection 
 import play_wordle
@@ -96,6 +95,20 @@ class TestWordleSolver:
         solver = WordleSolver(word_list)
         feedback = solver._generate_feedback('freer', 'kudzu')
         assert feedback == 'BBBBB'
+        
+
+    def test_feedback_possilbities(self):
+        word_list = ['apple', 'lemon', 'grape', 'kudzu', 'rarer', 'drape', 'crane', 'freer', 'drier']
+        solver = WordleSolver(word_list)
+        answer = 'drape'
+        guess = 'apple'
+        possible_feedbacks = solver._generate_all_possible_feedbacks(answer)
+        print(possible_feedbacks)
+
+
+
+
+
 
     def test_wordle_solves_every_word_small_set(self):
         word_list = ['buyer', 'apple', 'rarer', 'drape', 'eerie', 'melon', 'crane']
@@ -119,6 +132,20 @@ class TestWordleSolver:
             
         assert solved == True
 
+
+def number_of_attempts_to_guess():
+    word_list = word_collection.word_collect()[1000:1300]
+    attempt_dict = {}
+    for word in word_list:
+        answer = word
+        solver = play_wordle.auto_wordle(answer)
+        if solver == None:
+            print(answer)
+        attempt_dict[solver] = attempt_dict.get(solver, 0) + 1
+    
+    return attempt_dict
+
+# print(number_of_attempts_to_guess())
 
 
         

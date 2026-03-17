@@ -155,7 +155,7 @@ def frequency_of_letter_in_pos_total(words):
 
     return graph_form
 
-#graph_of_data(frequency_of_letter_in_pos_total(all_words))
+graph_of_data(frequency_of_letter_in_pos_total(all_words))
 
 def probability_of_letter_in_word(words, letter):
     return sum(1 for word in words if letter in word) / len(words)
@@ -377,5 +377,4 @@ def word_score_method_weighted_proportional(words):
     suggested_word = max(collective_word_scores.items(), key=lambda item : item[1])
     return suggested_word[0]
 
-# print(word_score_method_weighted_proportional(all_words))
 
