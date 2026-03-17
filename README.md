@@ -1,15 +1,13 @@
 # WordlePy
 
-Small Wordle helper scripts for guessing words.
+A python library for minimising the number of attempts to guess the answer to Wordle 
 
-Quick start
-- Run `python next_guess.py` to get a suggested guess.
+## Installation 
 
-Repository files
-- `all_words.txt` — word list
-- `frequency.py` — frequency utilities
-- `next_guess.py` — main suggestion logic
-- `test_guesses.py` — tests
-- `word_collection.py` — helper for word sets
+Run the following code in:
+- Terminal (MacOs)
+- Command Prompt (Windows)
 
-License: see LICENSE
+```
+>>> pip install 
+```

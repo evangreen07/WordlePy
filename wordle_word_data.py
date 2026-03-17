@@ -36,7 +36,6 @@ all_words = word_collection.word_collect()
 def most_common_letter(words):
     """
     This function determines the most common letter in all the possible answers.
-
     It does this by iterating through each word in the answer and tracking which letters appear in each word.
 
     For example: 'creep':
@@ -45,12 +44,10 @@ def most_common_letter(words):
     e: 2
     p: 1
 
-    Parameters:
-    ----------
+    Args:
     List of words, 'words'
 
     Returns:
-    -------
     Dictionary of letter (key) and number of total occurences (value), 'letter freq'
     """
     letter_freq = get_letter_dict()
@@ -61,6 +58,15 @@ def most_common_letter(words):
     return letter_freq
 
 def graph_of_data(data):
+    """
+    This function creates a bar chart for any given data.
+    
+    Args:
+    data (dict): this creates a bar chart with the x-axis being the keys and the y-values being the value the corresponding key.
+
+    Returns:
+    None
+    """
     x_axis = [letter for letter in data]
     y_axis = [data[letter] for letter in data]
     fig, ax = plt.subplots()
@@ -72,12 +78,28 @@ number_of_instances = most_common_letter(all_words)
 #graph_of_data(number_of_instances)
 
 def most_common_vowels(words):
+    """
+    This function evaluates the occurences of each vowel in the word list by returning only the vowel entries from most_common_letter
+
+    Args:
+    words (list): list of words which could be the answer to Wordle
+
+    Returns:
+    (dict) : dictionary of the instances of every vowel in 'words'
+    """
     vowels = ['a','e','i','o','u']
     vowel_freq = most_common_letter(words)
     return {vowel: vowel_freq[vowel] for vowel in vowels}
 #graph_of_data(most_common_vowels(all_words))
-
 def most_common_consonants(words):
+    """
+    Args:
+    words (list): list of words which could be the answer to Wordle
+
+    Returns:
+    consonant_freq (dict) : dictionary of the instances of every vowel in 'words'
+    """
+
     vowels = ['a','e','i','o','u']
     consonant_freq = most_common_letter(words)
     for vowel in vowels:
@@ -86,6 +108,9 @@ def most_common_consonants(words):
 #graph_of_data(most_common_consonants(all_words))
 
 def most_common_pairs_with_letter_first(words, letter):
+    """
+    words (list): list of words which could be the answer to Wordle
+    """
     letter_dict = get_letter_dict()
     condensed_words = [word for word in words if (letter in word) and (word.index(letter) != 4)]
     for word in condensed_words:
@@ -97,6 +122,9 @@ def most_common_pairs_with_letter_first(words, letter):
 
 
 def most_common_pairs_with_letter_last(words, letter):
+    """
+    words (list): list of words which could be the answer to Wordle
+    """
     letter_dict = get_letter_dict()
     condensed_words = [word for word in words if (letter in word) and (word.index(letter) != 0)]
     for word in condensed_words:
@@ -107,6 +135,9 @@ def most_common_pairs_with_letter_last(words, letter):
     return letter_dict
 
 def most_common_pairs_total(words):
+    """
+    words (list): list of words which could be the answer to Wordle
+    """
     letter_dict = get_letter_dict()
     pairs_with_letter_first = {letter : most_common_pairs_with_letter_first(words, letter) for letter in letter_dict}
     #pairs_with_letter_last = {letter : most_common_pairs_with_letter_last(words, letter) for letter in letter_dict}
@@ -118,6 +149,9 @@ def most_common_pairs_total(words):
     return graph_form
 
 def most_common_pair_score(words):
+    """
+    words (list): list of words which could be the answer to Wordle
+    """
     pair_dict = most_common_pairs_total(words)
     word_scores = {}
     for word in words:
@@ -130,6 +164,9 @@ def most_common_pair_score(words):
     return word_scores
 
 def frequency_of_letter_in_pos(words, letter):
+    """
+    words (list): list of words which could be the answer to Wordle
+    """
     position_dict = {
         '1' : 0,
         '2' : 0,
@@ -146,6 +183,9 @@ def frequency_of_letter_in_pos(words, letter):
     return position_dict
 
 def frequency_of_letter_in_pos_total(words):
+    """
+    words (list): list of words which could be the answer to Wordle
+    """
     letter_dict = get_letter_dict()
     letter_positions = {letter : frequency_of_letter_in_pos(words, letter) for letter in letter_dict}
     graph_form = {}
@@ -155,25 +195,40 @@ def frequency_of_letter_in_pos_total(words):
 
     return graph_form
 
-graph_of_data(frequency_of_letter_in_pos_total(all_words))
+#graph_of_data(frequency_of_letter_in_pos_total(all_words))
 
 def probability_of_letter_in_word(words, letter):
+    """
+    words (list): list of words which could be the answer to Wordle
+    """
     return sum(1 for word in words if letter in word) / len(words)
 
 def probability_of_letter_in_word_total(words):
+    """
+    words (list): list of words which could be the answer to Wordle
+    """
     letter_dict = get_letter_dict()
     return {letter: probability_of_letter_in_word(words, letter) for letter in letter_dict}
 
 #graph_of_data(probability_of_letter_in_word_total(all_words))
 
 def probability_of_pair_in_word(words):
+    """
+    words (list): list of words which could be the answer to Wordle
+    """
     condensed_pairs = {pair : most_common_pairs_total(words)[pair] / len(words) for pair in most_common_pairs_total(words) if most_common_pairs_total(words)[pair] != 0}
     return condensed_pairs
 
 def frequency_of_same_letter_pair(words, letter):
+    """
+    words (list): list of words which could be the answer to Wordle
+    """
     return most_common_pairs_total(words)[letter + letter]
 
 def frequency_of_same_letter_total(words):
+    """
+    words (list): list of words which could be the answer to Wordle
+    """
     letter_dict = get_letter_dict()
     frequency_dict = {letter: frequency_of_same_letter_pair(words, letter) for letter in letter_dict}
     return frequency_dict
@@ -181,6 +236,9 @@ def frequency_of_same_letter_total(words):
 #graph_of_data(frequency_of_same_letter_total(all_words))
 
 def word_score_frequent_letters(words):
+    """
+    words (list): list of words which could be the answer to Wordle
+    """
     letter_frequencies = most_common_letter(words)
     word_scores = {}
     for word in words:
@@ -193,6 +251,9 @@ def word_score_frequent_letters(words):
     return word_scores
 
 def word_score_position_of_letter(words):
+    """
+    words (list): list of words which could be the answer to Wordle
+    """
     position_freq = frequency_of_letter_in_pos_total(words)
     word_scores = {}
     for word in words:
@@ -207,6 +268,9 @@ def word_score_position_of_letter(words):
     return word_scores
 
 def word_score_common_pairs(words):
+    """
+    words (list): list of words which could be the answer to Wordle
+    """
     pairs_freq = most_common_pairs_total(words)
     word_scores = {}
     for word in words:
@@ -232,6 +296,9 @@ def get_combos():
     return combo_dict
 
 def frequency_of_word_structure(words):
+    """
+    words (list): list of words which could be the answer to Wordle
+    """
     vowels = ['a','e','i','o','u']
     combo_list = get_combos()
     for word in words:
@@ -247,6 +314,9 @@ def frequency_of_word_structure(words):
     return combo_list
 
 def get_word_structure(word):
+    """
+    words (list): list of words which could be the answer to Wordle
+    """
     vowels = ['a','e','i','o','u']
     word_structure = ''
     for letter in word:
@@ -258,21 +328,36 @@ def get_word_structure(word):
     return word_structure
 
 def frequency_of_word_structure_score(words):
+    """
+    words (list): list of words which could be the answer to Wordle
+    """
     structure_dict = frequency_of_word_structure(words)
     return {word: structure_dict[get_word_structure(word)] for word in words}
 
 def prob_of_structure_score(words):
+    """
+    words (list): list of words which could be the answer to Wordle
+    """
     frequency_of_word_structures = frequency_of_word_structure_score(words)
     return {word: frequency_of_word_structures[word] / len(words) for word in words}
 
 def get_letter_occurences(word):
+    """
+    words (list): list of words which could be the answer to Wordle
+    """
     return {letter : word.count(letter) for letter in word}
 
 def frequency_of_letter_variety(words):
+    """
+    words (list): list of words which could be the answer to Wordle
+    """
     letter_variety_dict = {word: len(get_letter_occurences(word)) for word in words}
     return letter_variety_dict
 
 def prob_of_letter_variety(words):
+    """
+    words (list): list of words which could be the answer to Wordle
+    """
     instances = [1, 2, 3, 4, 5]
     letter_varieties = frequency_of_letter_variety(words)
     probability_of_variety = {}
@@ -283,6 +368,9 @@ def prob_of_letter_variety(words):
     return probability_of_variety
 
 def prob_of_letter_variety_score(words):
+    """
+    words (list): list of words which could be the answer to Wordle
+    """
     letter_varieties = frequency_of_letter_variety(words)
     prob_of_variety = prob_of_letter_variety(words)
     return {word:  prob_of_variety[letter_varieties[word]] for word in words}
@@ -290,6 +378,9 @@ def prob_of_letter_variety_score(words):
 # print(prob_of_letter_variety_score(all_words))
 
 def frequency_of_letter_variety_score(words):
+    """
+    words (list): list of words which could be the answer to Wordle
+    """
     word_variety = frequency_of_letter_variety(words)
     return {word: word_variety[word] for word in words}
 
@@ -298,6 +389,9 @@ def frequency_of_letter_variety_score(words):
 
 
 def word_score_method_weighted_linear(words):
+    """
+    words (list): list of words which could be the answer to Wordle
+    """
     letter_freq = word_score_frequent_letters(words)
     position_freq = word_score_position_of_letter(words)
     pair_freq = most_common_pair_score(words)
@@ -310,6 +404,9 @@ def word_score_method_weighted_linear(words):
 
 
 def prob_of_letter(words):
+    """
+    words (list): list of words which could be the answer to Wordle
+    """
     letter_dict = get_letter_dict()
     total_letters = len(words) * 5
     letter_freq = {letter : most_common_letter(words)[letter] / total_letters for letter in letter_dict}
@@ -318,6 +415,9 @@ def prob_of_letter(words):
 #print(prob_of_letter(all_words))
 
 def prob_of_letter_score(words):
+    """
+    words (list): list of words which could be the answer to Wordle
+    """
     prob_letter_dict = prob_of_letter(words)
     probs = {}
     for word in words:
@@ -329,11 +429,17 @@ def prob_of_letter_score(words):
     return probs
         
 def prob_of_position(words):
+    """
+    words (list): list of words which could be the answer to Wordle
+    """
     pos_dict = frequency_of_letter_in_pos_total(words)
     return {pos : pos_dict[pos] / len(words) for pos in pos_dict}
 
 
 def prob_of_position_score(words):
+    """
+    words (list): list of words which could be the answer to Wordle
+    """
     positions_dict = prob_of_position(words)
     probs = {}
     for word in words:
@@ -348,6 +454,9 @@ def prob_of_position_score(words):
 #print(prob_of_position_score(all_words))
 
 def prob_of_pairs(words):
+    """
+    words (list): list of words which could be the answer to Wordle
+    """
     pair_dict = most_common_pairs_total(words)
     total_pairs = len(words) * 4
     return {pair: pair_dict[pair] / total_pairs for pair in pair_dict}
@@ -355,6 +464,9 @@ def prob_of_pairs(words):
 #print(prob_of_pairs(all_words))
 
 def prob_of_pairs_score(words):
+    """
+    words (list): list of words which could be the answer to Wordle
+    """
     pair_prob_dict = prob_of_pairs(words)
     prob_dict = {}
     for word in words:
@@ -368,6 +480,9 @@ def prob_of_pairs_score(words):
 #print(prob_of_pairs_score(all_words))
 
 def word_score_method_weighted_proportional(words):
+    """
+    words (list): list of words which could be the answer to Wordle
+    """
     letter_prob = prob_of_letter_score(words)
     position_prob = prob_of_position_score(words)
     pair_prob = prob_of_pairs_score(words)
