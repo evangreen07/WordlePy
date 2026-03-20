@@ -1,4 +1,0 @@
-import play_wordle
-import wordle_solver
-import word_collection
-import wordle_word_data

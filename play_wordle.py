@@ -39,6 +39,9 @@ def main():
             break
             
         possible_words = solver.process_feedback(suggested_word, feedback)
+        if len(solver.possible_words) == 0:
+            print('There are no more possible words')
+            break
         attempts += 1
         
     if attempts > max_attempts and feedback != 'GGGGG':
