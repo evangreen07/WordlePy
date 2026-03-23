@@ -1,4 +1,4 @@
-import wordle_word_data
+from . import wordle_word_data
 def initial_guess_linear(selection):
     """
     This function is the first output to the user when calling the WordlePy library, specifically, the WordleSolver class.
@@ -18,7 +18,7 @@ def initial_guess_linear(selection):
     
     Therefore its cumulative score from just this test is the sum of all these frequencies of 5269. (3 * 1233) + 899 + 671.
 
-    Parameters:
+    Args:
     - selection, this is the current word list which is filtered after each incorrect guess. (where the feedback is not 'GGGGG')
 
     Returns:
@@ -32,23 +32,57 @@ def initial_guess_weighted_porportional(selection):
 
     Rather than taking frequencies of the letters, pairs, structures etc, it takes the probabilities of them occuring.
 
-    Take 'eerie' as an example:
-    - Letter 'e'
+    Each statistic calculated in the word_score_method_weighted_linear() is divided by the length of possible words
+
+    The product of these probabilities is returned as a word's score.
     """
     return wordle_word_data.word_score_method_weighted_proportional(selection)
 
 class WordleSolver:
     def __init__(self, possible_words):
+        """
+        Initialiser method for WordleSolver class
+
+        Args: 
+        - self
+        - possible_words (list): list of all possible words left after a given feedback filter
+
+        Returns:
+        None
+        """
         self.possible_words = possible_words
     
     def suggest_word(self):
+        """
+        This method returns best word given obtained from several probalistic calculations in wordle_word_data.py
+
+        Args:
+        - self
+
+        Returns:
+        - best guess (str): the most likely answer to Wordle 
+        """
         best_guess = wordle_word_data.word_score_method_weighted_proportional(self.possible_words)
         return best_guess
     
     def process_feedback(self, guess, feedback):
+        """
+        This method calls the private _update_possible_words method which filters the possible words after a given feedback from a guess.
+
+        Args:
+        - self
+        - guess (str): the guess suggested by suggest_word() method
+        - feedback (str): the feedback provided by Wordle
+
+        Returns:
+        - None (filtered word list from called method)
+        """
         self._update_possible_words(guess, feedback)
 
     def _update_possible_words(self, guess, feedback):
+        """
+        This 
+        """
         #black_letters = self._format_words_excluded(guess, feedback)
         #yellow_letters = self._format_words_wrong_place(guess, feedback)
         #green_letters = self._format_words_correct(guess, feedback)   
@@ -261,6 +295,16 @@ class WordleSolver:
         return feedback_str
     
     def _generate_all_possible_feedbacks(self, answer): 
+        """
+        This method returns all feedback patterns from an answer and the possible words.
+
+        Args:
+        - self
+        - answer (str): a 5 letter word
+
+        Returns:
+        - probability_of_feedbacks (dict): a dictionary of feedback strings and their probabilities of occuring
+        """
         possible_words = self.possible_words
         possible_feedbacks = {}
         for word in possible_words:
@@ -268,6 +312,5 @@ class WordleSolver:
             possible_feedbacks[feedback] = possible_feedbacks.get(feedback, 0) + 1
 
         probability_of_feedbacks = {feedback: possible_feedbacks[feedback] / len(possible_words) for feedback in possible_feedbacks}
-        return sorted(probability_of_feedbacks.items(), key=lambda item : -item[1])[0][0]
-
+        return possible_feedbacks
 

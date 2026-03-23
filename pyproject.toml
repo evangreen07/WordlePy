@@ -1,0 +1,15 @@
+[build-system]
+requires = ["setuptools>=64"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "wordlepy"
+version = "0.1.0"
+description = "A Python-based Wordle solver using statistical analysis"
+requires-python = ">=3.8"
+dependencies = [
+    "matplotlib",
+]
+
+[tool.setuptools.package-data]
+wordlepy = ["all_words.txt"]

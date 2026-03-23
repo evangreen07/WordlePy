@@ -1,6 +1,6 @@
 import matplotlib.pyplot as plt
 import itertools
-import word_collection
+from . import word_collection
 
 def get_letter_dict():
     return {
@@ -74,8 +74,6 @@ def graph_of_data(data):
     plt.show()
     return 
 
-number_of_instances = most_common_letter(all_words)
-#graph_of_data(number_of_instances)
 
 def most_common_vowels(words):
     """
@@ -90,7 +88,6 @@ def most_common_vowels(words):
     vowels = ['a','e','i','o','u']
     vowel_freq = most_common_letter(words)
     return {vowel: vowel_freq[vowel] for vowel in vowels}
-#graph_of_data(most_common_vowels(all_words))
 def most_common_consonants(words):
     """
     Args:
@@ -105,7 +102,6 @@ def most_common_consonants(words):
     for vowel in vowels:
         consonant_freq.pop(vowel)
     return consonant_freq
-#graph_of_data(most_common_consonants(all_words))
 
 def most_common_pairs_with_letter_first(words, letter):
     """
@@ -140,7 +136,6 @@ def most_common_pairs_total(words):
     """
     letter_dict = get_letter_dict()
     pairs_with_letter_first = {letter : most_common_pairs_with_letter_first(words, letter) for letter in letter_dict}
-    #pairs_with_letter_last = {letter : most_common_pairs_with_letter_last(words, letter) for letter in letter_dict}
     graph_form = {}
     for letter_frequency_first in pairs_with_letter_first:
         for letter in pairs_with_letter_first[letter_frequency_first]:
@@ -195,7 +190,6 @@ def frequency_of_letter_in_pos_total(words):
 
     return graph_form
 
-#graph_of_data(frequency_of_letter_in_pos_total(all_words))
 
 def probability_of_letter_in_word(words, letter):
     """
@@ -210,7 +204,7 @@ def probability_of_letter_in_word_total(words):
     letter_dict = get_letter_dict()
     return {letter: probability_of_letter_in_word(words, letter) for letter in letter_dict}
 
-#graph_of_data(probability_of_letter_in_word_total(all_words))
+
 
 def probability_of_pair_in_word(words):
     """
@@ -232,8 +226,6 @@ def frequency_of_same_letter_total(words):
     letter_dict = get_letter_dict()
     frequency_dict = {letter: frequency_of_same_letter_pair(words, letter) for letter in letter_dict}
     return frequency_dict
-
-#graph_of_data(frequency_of_same_letter_total(all_words))
 
 def word_score_frequent_letters(words):
     """
@@ -375,18 +367,12 @@ def prob_of_letter_variety_score(words):
     prob_of_variety = prob_of_letter_variety(words)
     return {word:  prob_of_variety[letter_varieties[word]] for word in words}
 
-# print(prob_of_letter_variety_score(all_words))
-
 def frequency_of_letter_variety_score(words):
     """
     words (list): list of words which could be the answer to Wordle
     """
     word_variety = frequency_of_letter_variety(words)
     return {word: word_variety[word] for word in words}
-
-
-#graph_of_data(frequency_of_word_structure(all_words))
-
 
 def word_score_method_weighted_linear(words):
     """
@@ -411,8 +397,6 @@ def prob_of_letter(words):
     total_letters = len(words) * 5
     letter_freq = {letter : most_common_letter(words)[letter] / total_letters for letter in letter_dict}
     return  letter_freq
-
-#print(prob_of_letter(all_words))
 
 def prob_of_letter_score(words):
     """
@@ -451,8 +435,6 @@ def prob_of_position_score(words):
 
     return probs
 
-#print(prob_of_position_score(all_words))
-
 def prob_of_pairs(words):
     """
     words (list): list of words which could be the answer to Wordle
@@ -460,8 +442,6 @@ def prob_of_pairs(words):
     pair_dict = most_common_pairs_total(words)
     total_pairs = len(words) * 4
     return {pair: pair_dict[pair] / total_pairs for pair in pair_dict}
-
-#print(prob_of_pairs(all_words))
 
 def prob_of_pairs_score(words):
     """
@@ -476,8 +456,6 @@ def prob_of_pairs_score(words):
         prob_dict.update({word: word_prob})
 
     return prob_dict
-
-#print(prob_of_pairs_score(all_words))
 
 def word_score_method_weighted_proportional(words):
     """

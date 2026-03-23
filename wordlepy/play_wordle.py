@@ -1,5 +1,5 @@
-import word_collection
-from wordle_solver import WordleSolver
+from . import word_collection
+from .wordle_solver import WordleSolver
 
 def main():  
     """
@@ -52,6 +52,17 @@ if __name__ == "__main__":
 
 
 def auto_wordle(answer):
+    """
+    This function is used for testing the attempts required to guess a given word.
+
+    It takes a given answer and runs the Wordle game loop until the word is suggested. 
+
+    Args: 
+    - answer (str): the word the algorithm should tend towards suggesting
+
+    Returns:
+    - attempts (int): the number of tries before the answer was suggested
+    """
     possible_words = word_collection.word_collect()
     solver = WordleSolver(possible_words)
     attempts = 1

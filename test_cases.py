@@ -1,6 +1,6 @@
-from wordle_solver import WordleSolver
-import word_collection 
-import play_wordle
+from wordlepy.wordle_solver import WordleSolver
+from wordlepy import word_collection 
+from wordlepy import play_wordle
 
 
 class TestWordleSolver:
@@ -144,12 +144,24 @@ class TestWordleSolver:
         assert feedback == 'BYBGG'
 
     def test_feedback_duplicate_letters(self):
+        """
+        This test checks duplicate letters are marked correctly.
+
+        For example, if 'CHEER' was the guess and 'SMERE', the feedback should return 'BBYYB'.
+
+        As there exists multiple 'E's in different conditions, they should be marked correctly. 
+        """
         word_list = ['apple', 'lemon', 'grape', 'kudzu', 'rarer', 'drape', 'crane', 'freer', 'drier']
         solver = WordleSolver(word_list)
         feedback = solver._generate_feedback('freer', 'drier')
         assert feedback == 'BGBGG'
 
     def test_feedback_all_blacks(self):
+        """
+        This test checks appropriate feedback for non-existent letters in the guess compared to answer.
+
+        If the guess and the answer share no common letters then the feedback should be 'BBBBB'.
+        """
         word_list = ['apple', 'lemon', 'grape', 'kudzu', 'rarer', 'drape', 'crane', 'freer', 'drier']
         solver = WordleSolver(word_list)
         feedback = solver._generate_feedback('freer', 'kudzu')
@@ -157,19 +169,20 @@ class TestWordleSolver:
         
 
     def test_feedback_possilbities(self):
-        word_list = ['apple', 'lemon', 'grape', 'kudzu', 'rarer', 'drape', 'crane', 'freer', 'drier']
+        """
+        This checks for all possible feedbacks against an answer and the possible words remaining, whichever is the most probable,
+        the subsequent guess must follow the feedback. 
+        """
+        word_list = ['apple', 'lemon', 'grape', 'kudzu', 'rarer']
         solver = WordleSolver(word_list)
         answer = 'drape'
-        guess = 'apple'
         possible_feedbacks = solver._generate_all_possible_feedbacks(answer)
-        print(possible_feedbacks)
-
-
-
-
-
+        assert possible_feedbacks == {'YYBBG': 1, 'BYBBB': 1, 'BGGGG': 1, 'BBYBB': 1, 'YYBYB': 1}
 
     def test_wordle_solves_every_word_small_set(self):
+        """
+        This checks all words in a smaller subset can be guessed in under 6 guesses, as per the rules of Wordle.
+        """
         word_list = ['buyer', 'apple', 'rarer', 'drape', 'eerie', 'melon', 'crane']
         solved = True
         for word in word_list:
@@ -181,18 +194,28 @@ class TestWordleSolver:
         assert solved == True
 
     def test_wordle_solves_all_words(self):
+        """
+        This tests all 2315 potential answers for Wordle and if they can be guessed in 6 or less attempts. If not, the test displays
+        the word and fails.
+        """
         word_list = word_collection.word_collect()
         solved = True
         for word in word_list:
             answer = word
             solver = play_wordle.auto_wordle(answer)
             if solver == None:
+                solved = False
                 print(answer)
             
         assert solved == True
 
 
 def number_of_attempts_to_guess():
+    """
+    This test is a sub-test of test_wordle_solves_all_words and only tests 300 words if they can be guessed by the algorithm.
+
+    If a word is unable to be guessed in 6 or less attempts, the test fails.
+    """
     word_list = word_collection.word_collect()[1000:1300]
     attempt_dict = {}
     for word in word_list:
@@ -204,8 +227,7 @@ def number_of_attempts_to_guess():
     
     return attempt_dict
 
-# print(number_of_attempts_to_guess())
-
+number_of_attempts_to_guess()
 
         
 
