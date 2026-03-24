@@ -209,26 +209,6 @@ class TestWordleSolver:
             
         assert solved == True
 
-
-def number_of_attempts_to_guess():
-    """
-    This test is a sub-test of test_wordle_solves_all_words and only tests 300 words if they can be guessed by the algorithm.
-
-    If a word is unable to be guessed in 6 or less attempts, the test fails.
-    """
-    word_list = word_collection.word_collect()[1000:1300]
-    attempt_dict = {}
-    for word in word_list:
-        answer = word
-        solver = play_wordle.auto_wordle(answer)
-        if solver == None:
-            print(answer)
-        attempt_dict[solver] = attempt_dict.get(solver, 0) + 1
-    
-    return attempt_dict
-
-number_of_attempts_to_guess()
-
         
 
     

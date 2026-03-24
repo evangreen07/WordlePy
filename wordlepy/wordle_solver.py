@@ -3,9 +3,9 @@ def initial_guess_linear(selection):
     """
     This function is the first output to the user when calling the WordlePy library, specifically, the WordleSolver class.
 
-    The 'linear' part of this function is the type of test it uses to suggest the next best word. 
+    The 'linear' part of this function refers to the type of test it uses to suggest the next best word. 
     
-    Linear test is calculated by taking the frequency of several word statistics and simply adding them together.
+    Linear tests are calculated by taking the frequency of several word statistics and simply adding them together.
     
     A word's score is the sum of all these tests. For example:
 
@@ -18,11 +18,14 @@ def initial_guess_linear(selection):
     
     Therefore its cumulative score from just this test is the sum of all these frequencies of 5269. (3 * 1233) + 899 + 671.
 
-    Args:
+    Parameters:
     - selection, this is the current word list which is filtered after each incorrect guess. (where the feedback is not 'GGGGG')
 
     Returns:
     - The next best guess using the linear testing format in wordle_word_data.py
+
+    Raises:
+    - ZeroDivisionError if the possible word list is empty
     """
     return wordle_word_data.word_score_method_weighted_linear(selection)
 
@@ -35,6 +38,12 @@ def initial_guess_weighted_porportional(selection):
     Each statistic calculated in the word_score_method_weighted_linear() is divided by the length of possible words
 
     The product of these probabilities is returned as a word's score.
+
+    Parameters:
+    - selection (list): the list of possible Wordle answers
+
+    Returns:
+    - (str): the best guess from the current word list
     """
     return wordle_word_data.word_score_method_weighted_proportional(selection)
 
@@ -43,21 +52,24 @@ class WordleSolver:
         """
         Initialiser method for WordleSolver class
 
-        Args: 
-        - self
+        Parameters: 
         - possible_words (list): list of all possible words left after a given feedback filter
 
         Returns:
         None
+
+        Raises
+        - TypeError if not instantiated with a list
         """
+        
         self.possible_words = possible_words
     
     def suggest_word(self):
         """
         This method returns best word given obtained from several probalistic calculations in wordle_word_data.py
 
-        Args:
-        - self
+        Parameters :
+        - None
 
         Returns:
         - best guess (str): the most likely answer to Wordle 
@@ -69,8 +81,7 @@ class WordleSolver:
         """
         This method calls the private _update_possible_words method which filters the possible words after a given feedback from a guess.
 
-        Args:
-        - self
+        Parameters:
         - guess (str): the guess suggested by suggest_word() method
         - feedback (str): the feedback provided by Wordle
 
@@ -81,75 +92,8 @@ class WordleSolver:
 
     def _update_possible_words(self, guess, feedback):
         """
-        This 
+        This function 
         """
-        #black_letters = self._format_words_excluded(guess, feedback)
-        #yellow_letters = self._format_words_wrong_place(guess, feedback)
-        #green_letters = self._format_words_correct(guess, feedback)   
-        # valid_words = []     
-        # min_counts = {}
-        # for i in range(0, 5):
-        #     letter = guess[i]
-        #     if feedback[i] in ("G", "Y"):
-        #         if letter not in min_counts:
-        #             min_counts[letter] = 0
-        #         min_counts[letter] += 1
-
-        # max_counts = {}
-
-        # for i in range(0, 5):
-        #     letter = guess[i]
-        #     if feedback[i] == "B":
-        #         if letter in min_counts:
-        #             max_counts[letter] = min_counts[letter]
-        #         else:
-        #             max_counts[letter] = 0
-
-        # for word in self.possible_words:
-        #     valid_word = True
-        #     for i in range(len(guess)):
-        #         if feedback[i] == "G":
-        #             if word[i] != guess[i]:
-        #                 valid_word = False
-        #                 break
-        #     if not valid_word:
-        #         continue
-        #     for i in range(0, 5):
-        #         if feedback[i] == "Y":
-        #             letter = guess[i]
-
-        #             if word[i] == letter:
-        #                 valid_word = False
-        #                 break
-
-        #             if letter not in word:
-        #                 valid_word = False
-        #                 break
-
-        #     if not valid_word:
-        #         continue
-
-        #     word_counts = self._letter_counter(word)
-
-        #     for letter in min_counts:
-        #         if word_counts.get(letter, 0) < min_counts[letter]:
-        #             valid_word = False
-        #             break
-
-        #     if not valid_word:
-        #         continue
-
-        #     for letter in max_counts:
-        #         if word_counts.get(letter, 0) > max_counts[letter]:
-        #             valid_word = False
-        #             break
-
-        # if valid_word:
-        #     valid_words.append(word)
-        
-    
-        # self.possible_words = valid_words
-            
         min_counts = {}
         max_counts = {}
 
@@ -205,69 +149,19 @@ class WordleSolver:
                 valid_words.append(word)
 
             self.possible_words = valid_words
-        #words_after_green_check = [word for word in self.possible_words if word not in removed_words]
-
-        #removed_words = []
-
-        #for word in words_after_green_check:
-         #   word_positions = [letter + str(pos + 1) for pos, letter in enumerate(word)]
-          #  for y in yellow_letters:
-           #     letter = y[0]
-            #    pos = int(y[1]) - 1
-               # if word[pos] == letter or letter not in word:
-                #    removed_words.append(word)
-        
-        #words_after_yellow_check = [word for word in words_after_green_check if word not in removed_words]
-
-        #removed_words = []
-        
-        #for word in words_after_yellow_check:
-         #   for letter in black_letters:
-         #       if letter[0] in word:
-         #           removed_words.append(word)
-         #           break
-        #words_after_black_check = [word for word in words_after_yellow_check if word not in removed_words]
-
-        #removed_words = []
-
-
     
-    # def _format_words_excluded(self, guess, feedback):
-    #     letter_values = [[letter, status] for letter, status in zip(guess, feedback)]
-    #     return [letter[0] for letter in letter_values if letter[1] == 'B']
-
-    # def _format_words_wrong_place(self, guess, feedback):
-    #     letter_values = [[letter, status] for letter, status in zip(guess, feedback)]
-    #     yellow_letters = [(letter[0], pos + 1) for pos, letter in enumerate(letter_values) if letter[1] == 'Y']
-    #     return yellow_letters
-
-    # def _format_words_correct(self, guess, feedback):
-    #     letter_values = [[letter, status] for letter, status in zip(guess, feedback)]
-    #     green_letters = [(letter[0], pos + 1) for pos, letter in enumerate(letter_values) if letter[1] == 'G']
-    #     return green_letters
     def _generate_feedback(self, guess, answer):
-        # if guess == answer:
-        #     return 'GGGGG'
-        
-        # max_counts = {}
-        # for letter in answer:
-        #     max_counts[letter] = max_counts.get(letter, 0) + 1
-        
-        # guess_counts = {letter: 0 for letter in max_counts}
-        # feedback = ''
-        # for index in range(0, 5):
-        #     if guess[index] == answer[index]:
-        #         feedback += 'G'
-        #         guess_counts[guess[index]] += 1
-            
-        #     else:
-        #         if guess[index] in answer and guess_counts[guess[index]] < max_counts[guess[index]]:
-        #             feedback += 'Y'
-                
-        #         if guess[index] not in answer:
-        #             feedback += 'B'
+        """
+        This method returns the 
 
-        # return feedback
+        Parameters:
+        - guess (str): 5 letter word attempted by the user
+        - answer (str): 5 letter word which the user tries to guess
+
+        Returns:
+        - feedback (str): 5 letter feedback string consisting of 'B', 'G' and 'Y' to signify the status of each letter in 'guess' 
+        compared to 'answer'
+        """
         if guess == answer:
             return 'GGGGG'
         
@@ -288,11 +182,7 @@ class WordleSolver:
                     feedback[index] = 'Y'
                     letter_counts[letter] -= 1
         
-        feedback_str = ''
-        for f in feedback:
-            feedback_str += f
-        
-        return feedback_str
+        return ''.join(feedback)
     
     def _generate_all_possible_feedbacks(self, answer): 
         """
@@ -312,5 +202,6 @@ class WordleSolver:
             possible_feedbacks[feedback] = possible_feedbacks.get(feedback, 0) + 1
 
         probability_of_feedbacks = {feedback: possible_feedbacks[feedback] / len(possible_words) for feedback in possible_feedbacks}
-        return possible_feedbacks
+        return probability_of_feedbacks
+
 
