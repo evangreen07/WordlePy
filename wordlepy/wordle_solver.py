@@ -1,31 +1,19 @@
 from . import wordle_word_data
 def initial_guess_linear(selection):
     """
-    This function is the first output to the user when calling the WordlePy library, specifically, the WordleSolver class.
+    This function returns the most likely answer to Wordle using the linear testing method.
 
-    The 'linear' part of this function refers to the type of test it uses to suggest the next best word. 
-    
-    Linear tests are calculated by taking the frequency of several word statistics and simply adding them together.
-    
-    A word's score is the sum of all these tests. For example:
-
-    The word 'eerie':
-    - Has 3 'e's, 1 'r' and 1 'i'
-    - Has pairs of letters, 'ee', 'er', 'ri', 'ie'
-    - Follows a vowel-vowel-consonant-vowel-vowel word structure
-
-    The data gathered in wordle_word_data shows that in all words, 'e' occurs 1233 times, 'r' has 899 and 'i' has 671.
-    
-    Therefore its cumulative score from just this test is the sum of all these frequencies of 5269. (3 * 1233) + 899 + 671.
+    It calculates word score based on the sum of several frequencies of statistics of each word.
 
     Parameters:
-    - selection, this is the current word list which is filtered after each incorrect guess. (where the feedback is not 'GGGGG')
+    - selection (list): a list of words 
 
-    Returns:
-    - The next best guess using the linear testing format in wordle_word_data.py
+    Returns: 
+    - (str): the most likely answer with the given word list
 
     Raises:
     - ZeroDivisionError if the possible word list is empty
+    - TypeError if selection is not a list
     """
     return wordle_word_data.word_score_method_weighted_linear(selection)
 
@@ -44,6 +32,10 @@ def initial_guess_weighted_porportional(selection):
 
     Returns:
     - (str): the best guess from the current word list
+
+    Raises:
+    - ZeroDivisionError if selection is an empty list
+    - TypeError if selection is not a list
     """
     return wordle_word_data.word_score_method_weighted_proportional(selection)
 
@@ -90,9 +82,28 @@ class WordleSolver:
         """
         self._update_possible_words(guess, feedback)
 
+    def wordle_reset(self, reset_words):
+        """
+        This function resets the word list.
+
+        Parameters:
+        - reset_words (list): a list of words
+
+        Returns:
+        - None (updates 'possible_words' back to desired word list)
+        """
+        self.possible_words = reset_words
+
     def _update_possible_words(self, guess, feedback):
         """
-        This function 
+        This function filters the possible words from a given guess and its feedback from Wordle.
+
+        Parameters:
+        - guess (str): a 5 letter word 
+        - feedback (str): a 5 letter word composed of 'Y', 'G' and 'B'
+
+        Returns:
+        - None (re-assigns possible words to the filtered list)
         """
         min_counts = {}
         max_counts = {}
@@ -152,7 +163,11 @@ class WordleSolver:
     
     def _generate_feedback(self, guess, answer):
         """
-        This method returns the 
+        This method returns the feedback string of 'guess' from answer'
+
+        - If the letter is in the word, but in the wrong position it gets assigned 'Y'
+        - If the letter is exactly the same as in the answer it gets asdigned 'G'
+        - If the letter is not in the word, it gets assigned 'B'
 
         Parameters:
         - guess (str): 5 letter word attempted by the user

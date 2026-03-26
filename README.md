@@ -53,8 +53,30 @@ Retrieve the best guess using `suggest_word()`
 Feed `best_guess` into Wordle
 
 Call `process_feedback(best_guess, feedback)` where `feedback` is the response from Wordle in the format described in the Tutorial section.
+```
+>>> feedback = 'GBYGB'
+>>> solver.process_feedback(best_guess, feedback)
+```
 
-Change `feedback` according to the response from Wordle and call `suggest_word`.
+Call `suggest_word()`.
+```
+>>> best_guess = solver.suggest_word()
+```
+Update `feedback` to feedback of `best_guess` from Wordle.
+
+Call `process_feedback()` with same parameters as before.
+
+Call `suggest_word()`.
+
+
+### Reset for a new game
+
+Call the `wordle_reset()` method with `words` as an argument. 
+
+```
+>>> solver.wordle_reset(words)
+```
+
 
 
 ## Discussion
@@ -96,6 +118,7 @@ This is the same situation which Markov chains base their conditional logic on [
 - `word_collect()` returns all 2315 words which could be the Wordle answer
 - `WordleSolver` class contains the probability function and algorithms to calculate the most likely word 
 - `process_feedback()` updates the word list given a guess and its respective feedback
+- `wordle_reset()` resets the word list
 
 
 

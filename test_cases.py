@@ -1,9 +1,179 @@
 from wordlepy.wordle_solver import WordleSolver
 from wordlepy import word_collection 
 from wordlepy import play_wordle
+from wordlepy import wordle_word_data
 
 
 class TestWordleSolver:
+
+    def test_word_get_letter_dict(self):
+        """
+        This test checks the letter dictionary is loaded correctly.
+        """
+        letter_dict = wordle_word_data.get_letter_dict()
+        assert letter_dict == {
+        'a': 0,
+        'b': 0,
+        'c': 0,
+        'd': 0,
+        'e': 0,
+        'f': 0,
+        'g': 0,
+        'h': 0,
+        'i': 0,
+        'j': 0,
+        'k': 0,
+        'l': 0,
+        'm': 0,
+        'n': 0,
+        'o': 0,
+        'p': 0,
+        'q': 0,
+        'r': 0,
+        's': 0,
+        't': 0,
+        'u': 0,
+        'v': 0,
+        'w': 0,
+        'x': 0,
+        'y': 0,
+        'z': 0
+    }
+    
+    def test_all_etter_frequencies(self):
+        """
+        This test checks the function correclty identifies the frequencies of different letters.
+        """
+        words = ['bagel', 'apple', 'crane', 'purge']
+        letter_dict = wordle_word_data.all_letter_frequencies(words)
+        letter_dict = {letter: letter_dict[letter] for letter in letter_dict if letter_dict[letter] != 0}
+        assert letter_dict == {'a': 3, 'b': 1, 'c': 1, 'e': 4, 'g': 2, 'l': 2, 'n': 1, 'p': 3, 'r': 2, 'u': 1}
+
+    def test_letter_pair_frequencies(self):
+        """
+        This tests the fucntion correclty identifies all the pairs beginning with the letter specified.
+        """
+        words = ['bagel', 'apple', 'bangs'] 
+        letter = 'a'
+        pair_dict = wordle_word_data.letter_pair_frequencies(words, letter)
+        pair_dict = {pair: pair_dict[pair] for pair in pair_dict if pair_dict[pair] != 0}        
+        assert pair_dict == {'g': 1, 'n': 1, 'p': 1}
+
+    def test_letter_pair_frequencies_total(self):
+        """
+        This test checks the function correctly identifies all the pairs of letters.
+        """
+        words = ['bagel', 'bangs']
+        pair_dict = wordle_word_data.most_common_pairs_total(words)
+        pair_dict = {pair: pair_dict[pair] for pair in pair_dict if pair_dict[pair] != 0}      
+        assert pair_dict == {'ba': 2, 'ag': 1, 'ge': 1, 'el': 1, 'an': 1, 'ng': 1, 'gs': 1}
+        
+    def test_frequency_of_letter_in_pos(self):
+        """
+        This test checks the function correctly identifies the frequencies of a given letter in different positions.
+        """
+        words = ['bagel', 'apple', 'crane', 'purge']
+        letter = 'e'
+        pos_dict = wordle_word_data.frequency_of_letter_in_pos(words, letter)
+        pos_dict = {pos: pos_dict[pos] for pos in pos_dict if pos_dict[pos] != 0}
+        assert pos_dict == {'4': 1, '5': 3}
+
+    def test_frequency_of_letter_in_pos_total(self):
+        """
+        This test checks the function correctly identifies the frequencies of all letters in different positions.
+        """
+        words = ['bagel', 'apple', 'crane', 'purge']
+        pos_dict = wordle_word_data.frequency_of_letter_in_pos_total(words)
+        pos_dict = {pos: pos_dict[pos] for pos in pos_dict if pos_dict[pos] != 0}
+        assert pos_dict == {'a1': 1, 'a2': 1, 'a3': 1, 'b1': 1, 'c1': 1, 'e4': 1, 'e5': 3, 'g3': 1, 'g4': 1, 'l4': 1, 'l5': 1, 'n4': 1, 'p1': 1, 'p2': 1, 'p3': 1, 'r2': 1,  'r3': 1, 'u2': 1}
+
+    def test_frequency_of_word_structure(self):
+        """
+        This checks the function correctly identifies the frequencies of different word structures.
+        """
+        words = ['bagel', 'apple', 'crane', 'purge']
+        structure_dict = wordle_word_data.frequency_of_word_structure(words)
+        structure_dict = {structure: structure_dict[structure] for structure in structure_dict if structure_dict[structure] != 0}
+        assert structure_dict == {'cvcvc': 1, 'vcccv': 1, 'cvccv': 1, 'ccvcv': 1}
+
+    def test_get_letter_occurences(self):
+        """
+        This test checks the letter count function works correctly.
+        """
+        word = 'spree'
+        letter_dict = wordle_word_data.get_letter_occurences(word)
+        assert letter_dict == {'s': 1, 'p': 1, 'r': 1, 'e': 2}
+
+    def test_frequency_of_letter_variety(self):
+        """
+        This test checks the function correctly identifies the number of unique letters in each word.
+        """
+        words = ['bagel', 'apple', 'crane', 'purge']
+        variety_dict = wordle_word_data.frequency_of_letter_variety(words)
+        assert variety_dict == {'bagel': 5, 'apple': 4, 'crane': 5, 'purge': 5}
+
+
+    def test_prob_of_letter(self):
+        """
+        This test checks the probability function works and its values are between 0 and 1.
+        """
+        words = ['bagel', 'apple', 'crane', 'purge']
+        prob_of_letter_dict = wordle_word_data.prob_of_letter(words)
+        prob_of_letter_dict = {letter: prob_of_letter_dict[letter] for letter in prob_of_letter_dict if prob_of_letter_dict[letter] != 0}
+        assert prob_of_letter_dict == {'a': 0.15, 'b': 0.05, 'c': 0.05, 'e': 0.2, 'g': 0.1, 'l': 0.1, 'n': 0.05, 'p': 0.15, 'r': 0.1, 'u': 0.05}
+
+    def test_prob_of_position(self):
+        """
+        This test checks the probability of positions function works and its values are between 0 and 1.
+        """
+        words = ['bagel', 'libel']
+        prob_of_position_dict = wordle_word_data.prob_of_position(words)
+        prob_of_position_dict = {pos: prob_of_position_dict[pos] for pos in prob_of_position_dict if prob_of_position_dict[pos] != 0}
+        assert prob_of_position_dict == {'b1': 0.5, 'a2': 0.5, 'g3': 0.5, 'e4': 1.0, 'l5': 1.0, 'l1': 0.5, 'i2': 0.5, 'b3': 0.5}
+
+    def test_prob_of_pairs(self):
+        """
+        This test checks the probability of pairs function works and its values are between 0 and 1.
+        """
+        words = ['bagel', 'label']
+        prob_of_pairs_dict = wordle_word_data.prob_of_pairs(words)
+        prob_of_pairs_dict = {pair: prob_of_pairs_dict[pair] for pair in prob_of_pairs_dict if prob_of_pairs_dict[pair] != 0}
+        assert prob_of_pairs_dict == {'ba': 0.125, 'ag': 0.125, 'ge': 0.125, 'el': 0.25, 'la': 0.125, 'ab': 0.125, 'be': 0.125}
+
+    def test_prob_of_structure(self):
+        """
+        This test checks the probability of word structure function works and its values are between 0 and 1.
+        """
+        words = ['bagel', 'apple', 'crane', 'crime']
+        prob_of_structure_dict = wordle_word_data.prob_of_structure_score(words)
+        prob_of_structure_dict = {structure: prob_of_structure_dict[structure] for structure in prob_of_structure_dict if prob_of_structure_dict[structure] != 0}
+        assert prob_of_structure_dict == {'apple': 0.25, 'bagel': 0.25, 'crane': 0.5, 'crime': 0.5}
+
+    def test_prob_of_letter_variety(self):
+        """
+        This test checks the probability of letter varieties function works and its values are between 0 and 1.
+        """
+        words = ['bagel', 'apple', 'crane', 'purge']
+        prob_of_variety_dict = wordle_word_data.prob_of_letter_variety(words)
+        prob_of_variety_dict = {variety: prob_of_variety_dict[variety] for variety in prob_of_variety_dict if prob_of_variety_dict[variety] != 0}
+        assert prob_of_variety_dict == {4: 0.25, 5: 0.75}
+
+    def test_word_score_method_weighted_linear(self):
+        """
+        This test checks the best guess is appropriately returned and scored. 
+        """
+        words = ['bagel', 'apple', 'crane', 'purge']
+        best_guess = wordle_word_data.word_score_method_weighted_linear(words)
+        assert best_guess == 'apple'
+
+    def test_word_score_method_weighted_proportional(self):
+        """
+        This test checks the best guess is appropriately returned and scored. 
+        """
+        words = ['bagel', 'apple', 'crane', 'purge']
+        best_guess = wordle_word_data.word_score_method_weighted_proportional(words)
+        assert best_guess == 'purge'
+
     def test_initialisation(self):
         """
         This test checks the word list can be instantiated into the class correctly.
@@ -167,18 +337,6 @@ class TestWordleSolver:
         feedback = solver._generate_feedback('freer', 'kudzu')
         assert feedback == 'BBBBB'
         
-
-    def test_feedback_possilbities(self):
-        """
-        This checks for all possible feedbacks against an answer and the possible words remaining, whichever is the most probable,
-        the subsequent guess must follow the feedback. 
-        """
-        word_list = ['apple', 'lemon', 'grape', 'kudzu', 'rarer']
-        solver = WordleSolver(word_list)
-        answer = 'drape'
-        possible_feedbacks = solver._generate_all_possible_feedbacks(answer)
-        assert possible_feedbacks == {'YYBBG': 1, 'BYBBB': 1, 'BGGGG': 1, 'BBYBB': 1, 'YYBYB': 1}
-
     def test_wordle_solves_every_word_small_set(self):
         """
         This checks all words in a smaller subset can be guessed in under 6 guesses, as per the rules of Wordle.

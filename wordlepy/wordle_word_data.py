@@ -1,5 +1,4 @@
 import matplotlib.pyplot as plt
-import itertools
 from . import word_collection
 
 def get_letter_dict():
@@ -41,8 +40,7 @@ def get_letter_dict():
         'z': 0
     }
 
-all_words = word_collection.word_collect()
-def most_common_letter(words):
+def all_letter_frequencies(words):
     """
     This function determines the most common letter in all the possible answers.
 
@@ -96,7 +94,7 @@ def most_common_vowels(words):
     - (dict) : dictionary of the instances of every vowel in 'words'
     """
     vowels = ['a','e','i','o','u']
-    vowel_freq = most_common_letter(words)
+    vowel_freq = all_letter_frequencies(words)
     return {vowel: vowel_freq[vowel] for vowel in vowels}
 
 def most_common_consonants(words):
@@ -114,12 +112,12 @@ def most_common_consonants(words):
     """
 
     vowels = ['a','e','i','o','u']
-    consonant_freq = most_common_letter(words)
+    consonant_freq = all_letter_frequencies(words)
     for vowel in vowels:
         consonant_freq.pop(vowel)
     return consonant_freq
 
-def most_common_pairs_with_letter_first(words, letter):
+def letter_pair_frequencies(words, letter):
     """
     This function finds the frequencies of all possible letter pairs from a given first letter.  
 
@@ -157,7 +155,7 @@ def most_common_pairs_total(words):
     - TypeError if words is not a list
     """
     letter_dict = get_letter_dict()
-    pairs_with_letter_first = {letter : most_common_pairs_with_letter_first(words, letter) for letter in letter_dict}
+    pairs_with_letter_first = {letter : letter_pair_frequencies(words, letter) for letter in letter_dict}
     word_pairs = {}
     for letter_frequency_first in pairs_with_letter_first:
         for letter in pairs_with_letter_first[letter_frequency_first]:
@@ -333,7 +331,7 @@ def word_score_frequent_letters(words):
 
     A word is scores by the sum of the frequencies of each letter it contains in 'words'
 
-    For example, the word CRANE', would have a  total score equal to the sum of the frequency of 'C', 'R', 'A', 'N' and 'E'.
+    For example, the word 'CRANE', would have a  total score equal to the sum of the frequency of 'C', 'R', 'A', 'N' and 'E'.
 
     Parameters:
     - words (list): list of words which could be the answer to Wordle
@@ -344,7 +342,7 @@ def word_score_frequent_letters(words):
     Raises:
     - TypeError if words is not a list
     """
-    letter_frequencies = most_common_letter(words)
+    letter_frequencies = all_letter_frequencies(words)
     word_scores = {}
     for word in words:
         word_total = 0
@@ -419,29 +417,6 @@ def word_score_common_pairs(words):
     
     return word_scores
 
-def get_combos():
-    """
-    This function generates all the combinations of vowels-consonant word structure a 5 letter word can take.
-
-    It does this by calculating the Cartesian product of 'v' and 'c' and repeating the pattern until the combination is five letters long.
-
-    Parameters:
-    - None
-
-    Yields:
-    - combo_dict (dict): a dictionary of all combinaions with initial values of 0
-    """
-    combos = list(itertools.product(['v','c'], repeat=5))
-    combo_dict = {}
-    for combo in combos:
-        combo_structure = '' 
-        for value in combo:
-            combo_structure += value
-
-        combo_dict.update({combo_structure: 0})
-    
-    return combo_dict
-
 def frequency_of_word_structure(words):
     """
     This function returns the frequency of all possible word structures a 5 letter word could take.
@@ -456,7 +431,7 @@ def frequency_of_word_structure(words):
     - TypeError if words is not a list
     """
     vowels = ['a','e','i','o','u']
-    combo_dict = get_combos()
+    combo_dict = {}
     for word in words:
         word_structure = ''
         for letter in word:
@@ -465,7 +440,7 @@ def frequency_of_word_structure(words):
             else:
                 word_structure += 'c'
 
-        combo_dict[word_structure] += 1
+        combo_dict[word_structure] = combo_dict.get(word_structure, 0) + 1
 
     return combo_dict
 
@@ -675,7 +650,7 @@ def prob_of_letter(words):
     """
     letter_dict = get_letter_dict()
     total_letters = len(words) * 5
-    letter_prob = {letter : most_common_letter(words)[letter] / total_letters for letter in letter_dict}
+    letter_prob = {letter : all_letter_frequencies(words)[letter] / total_letters for letter in letter_dict}
     return  letter_prob
 
 def prob_of_letter_score(words):
@@ -722,7 +697,6 @@ def prob_of_position(words):
     """
     pos_dict = frequency_of_letter_in_pos_total(words)
     return {pos : pos_dict[pos] / len(words) for pos in pos_dict}
-
 
 def prob_of_position_score(words):
     """
@@ -836,5 +810,3 @@ def word_score_method_weighted_proportional(words):
     collective_word_scores = {word: 1 * letter_prob[word] * position_prob[word] * pair_prob[word] * structure_prob[word] * variety_prob[word] for word in words}
     suggested_word = max(collective_word_scores.items(), key=lambda item : item[1])
     return suggested_word[0]
-
-
